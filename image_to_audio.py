@@ -10,7 +10,7 @@ import streamlit as st
 load_dotenv(find_dotenv())
 HUGGINGFACEHUB_API_TOKEN=os.getenv("HUGGINGFACEHUB_API_TOKEN")
 
-
+"""cconverts the image to text"""
 def img2text(url):
     image_to_text=pipeline("image-to-text", model="Salesforce/blip-image-captioning-base")
 
@@ -19,7 +19,7 @@ def img2text(url):
     print(text)
 
     return text
-
+"""uses a prompt template and a language model to create a story based on that image"""
 def generate_story (scenario):
     template= """                                                                                                                                                                                 
     You are a story teller;                                                                                                                                                                       
@@ -40,9 +40,7 @@ def generate_story (scenario):
     return story
 
 
-
-
-
+"""creates an audio file based on the story"""
 def text2speech(message):
     API_URL = "https://api-inference.huggingface.co/models/espnet/kan-bayashi_ljspeech_vits"
     headers = {"Authorization": f"Bearer {HUGGINGFACEHUB_API_TOKEN}"}
@@ -54,7 +52,7 @@ def text2speech(message):
     with open ('story.mp3','wb') as file:
         file.write(response.content)
 
-
+"""responsible for running the program"""
 url  = input("Enter a URL:")
 urllib.request.urlretrieve(url, "file.jpg")
 scenario=img2text("file.jpg")
