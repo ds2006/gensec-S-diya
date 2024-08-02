@@ -29,9 +29,14 @@ def get_github_repo_content(username, repo_name):
 def summarize_content(text, max_length=500):
     """Summarizes text using a pre-trained model."""
     summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
-    summary = summarizer(text, max_length=max_length, min_length=30, do_sample=False)
-    return summary[0]['summary_text']
-
+    # Chunk the text for summarization                                                                                                                                                            
+    chunk_size = 2000  # Adjust as needed                                                                                                                                                         
+    chunks = [text[i:i + chunk_size] for i in range(0, len(text), chunk_size)]
+    summaries = []
+    for chunk in chunks:
+        summary = summarizer(chunk, max_length=max_length, min_length=30, do_sample=False)
+        summaries.append(summary[0]['summary_text'])
+    return "\n".join(summaries)
 
 def get_repo_content(username, repo_name):
     """Fetches content from README and code files."""
