@@ -54,7 +54,7 @@ def get_repo_content(username, repo_name):
             if response.status_code == 200:
                 readme_url = url
                 break
-       if response is None or response.status_code != 200:
+        if response is None or response.status_code != 200:
             print("README not found. Skipping...")
             return ""
 
